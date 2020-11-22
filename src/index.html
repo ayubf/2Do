@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>2Do</title>
+	<link href="https://fonts.googleapis.com/css2?family=Montserrat&family=Oswald:wght@500&display=swap" rel="stylesheet">
+	<link href='index.css'  rel="stylesheet">
+	<script src='index.js'></script>
+	<script src='render.js'></script>
+</head>
+<body id='body'>
+
+	<p id='textspace'></p>
+
+  <div id='taskMaker'>
+  	<p> New Task</p>	
+	<textarea id='title' rows='1' cols='16' placeholder="Title"></textarea> <br>
+	<textarea  id='target' rows='15' cols='30' placeholder="Task"></textarea> <br>
+	Task Level:<select id='taskLevel'>
+		<option value='No Rush' id='norush'>No Rush</option>
+		<option value='Moderate'id='moderate'>Moderate</option>
+		<option value='Urgent' id='urgent'>Urgent</option>
+	</select> <br>
+	Deadline:<textarea id='deadLine' rows='1' cols='8' ></textarea>
+		<script>
+			var taskNum = 0;
+			//// Task-making related part
+			function addTsk() { 
+				 let title = '';
+   				 let deadLine = document.getElementById('deadLine').value;
+   				 let taskLevel = document.getElementById('taskLevel').value;
+			     let taskCont = document.getElementById('target').value +'<br>';
+				 if (document.getElementById('title').value == '') {title = 'Title'}
+    			  else {title = document.getElementById('title').value + '<br>';}
+    
+
+    			 let boxColor;
+    			 if (taskLevel == 'No Rush') {boxColor = "#FFFF99"} else if (taskLevel == 'Moderate') {boxColor = '#fed8b1'} else if (taskLevel == 'Urgent') {boxColor = ' #ffcccb'}
+   				 taskNum++;
+  				  let deleteTask = `
+   				 document.getElementById('task${taskNum}').style.display= 'none';
+   				 `;
+   				 var fullTask=` 
+    			<style>
+       			 #task${taskNum}{
+          		  font-family: 'Montserrat', sans-serif;
+            	  border-radius: 25px;
+      			  }
+        		#task${taskNum}{
+      			  background-color: ${boxColor};	
+      			  padding: 50px;
+      			  width: 400px;
+      			  left: 75%;
+        		  bottom: 55%;
+					}
+				.task{
+					display : block;
+				}
+   				 </style>
+    			<div class="task" id='task${taskNum}' style="background-color: ${boxColor} ;"> 
+     		   		<p> ${title}
+         	   		${taskCont}
+            	    -Task Level: ${taskLevel} <br>
+           			-Deadline: ${deadLine} <br> 
+     			   <p> <br> <br> <br> <br>
+        		   <button onclick="${deleteTask}">(x)</button>
+ 			   </div>`;
+
+				document.getElementById('textspace').innerHTML +=fullTask;
+
+				let cont = 'pls';
+				try{ fs.writeFileSync('userTasks.txt', cont);}
+				catch (e) {console.log('didnt work');}	
+
+			}			 
+			function deleteAll() {
+			}
+	
+		</script>
+		<br> <button onclick='addTsk()'>Add Task</button> <br> <button id='namet' onclick='document.getElementById("about").style.display = "block";'>About</button>
+		<button onclick='document.getElementsByClassName("task").style.display = "none";'>Clear Tasks</button>
+		<dialog id='about' style='line-height: 1.5;'>
+			<p> Made By: Ayub Farah <br> Version: Beta <br> Date Released: 10/2020 </p>
+			<br> <button onclick='document.getElementById("about").style.display = "none";'>(x)</button>
+		<dialog>
+	 </div>
+</body>
+</html>

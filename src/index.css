@@ -1,0 +1,47 @@
+body{
+	line-height: 2.5;
+	font-family: 'Montserrat', sans-serif;
+	}
+textarea{
+	resize: none;
+	font-family: 'Montserrat', sans-serif;
+}
+button{
+	border-radius: 25px;
+	background-color: white;
+	border: 1px;
+}
+#norush {
+	color: yellow;
+}
+#moderate{
+	color: orange;
+}
+#urgent{
+	color: red;
+}
+#taskMaker{
+	/* The box thingy to configure a task */
+	background-color:#eeeeee;	
+	padding-left:87.5px;
+	padding-right:87.5px;
+	padding-bottom:180px;
+	padding-top: 35px;
+	width: 175px;
+	height:350px;
+	position: fixed;
+	left: 60%;
+	bottom: 35%;
+	border-radius: 25px;
+}
+#about{
+	position: absolute;
+ 	width: 300px;
+ 	height: 200px;
+  	z-index: 15;
+ 	top: 50%;	
+ 	left: -30%;
+  	margin: -100px 0 0 -150px;	
+  	background: black;
+  	color:white;
+}
