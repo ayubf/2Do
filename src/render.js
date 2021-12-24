@@ -1,53 +1,97 @@
-$(document).ready(function() {
-    var taskNum = 0;
-    //// Task-making related part
-    $('#about').hide()
-    $('#start').click(function() { 
-         let title = '';
-            let deadLine = $('#deadLine').val();
-            let taskLevel = $('#taskLevel').val();
-         let taskCont = $('#target').val() +'<br>';
-         if ($('#title').val() == '') {title = 'Title'}
-          else {title = $('#title').val() + '<br>';}
-        
 
-         let boxColor;
-         if (taskLevel == 'No Rush') {boxColor = "#FFFF99"} else if (taskLevel == 'Moderate') {boxColor = '#fed8b1'} else if (taskLevel == 'Urgent') {boxColor = ' #ffcccb'}
-            taskNum++;
-            let deleteTask = `
-           $('#task${taskNum}').hide();
-            `;
-            var fullTask=` 
-        <style>
-            #task${taskNum}{
-            font-family: 'Montserrat', sans-serif;
-          border-radius: 25px;
-            }
-        #task${taskNum}{
-            background-color: ${boxColor};	
-            padding: 50px;
-            width: 400px;
-            left: 75%;
-              bottom: 55%;
-            }
-            </style>
-        <div class="task" id='task${taskNum}' style="background-color: ${boxColor} ;"> 
-                <p> ${title}
-                    ${taskCont}
-            -Task Level: ${taskLevel} <br>
-               -Deadline: ${deadLine} <br> 
-            <p> <br> <br> <br> <br>
-               <button onclick="${deleteTask}">(x)</button>
-        </div>`;
-        document.getElementById('textspace').innerHTML+= fullTask;});
-    $('#namet').click(function(){
-        $('#about').show()
-    });
-    $('#abth').click(function() {
-        $('#about').hide()
-    });
-    $('#tskh').click(function() {
-        $('.task').hide()
+const { totalmem } = require("os");
+const { rootCertificates } = require("tls");
+const fs  = require('fs');
+const path = require('path');
+
+let taskNum = '0';
+let titleInput = '';
+let taskContentInput  ='';
+let taskLevel = '';
+let deadLineInput = '';
+
+function hideAbt() {    
+    var obj  = document.getElementById('aboutDiv');
+    obj.className = '';
+    obj.className = 'hidden';
+}
+function showAbt() {
+    let obj = document.getElementById('aboutDiv');
+    obj.className = '';
+    obj.className = 'shown';
+}
+function hide() {
+    this.parentNode.parentNode.remove();
+}
+
+function addTask() {
+    titleInput = document.getElementById('titleInput').value;
+    taskContentInput = document.getElementById('taskContentInput').value;
+    taskLevel = document.getElementById('taskLevel').value;
+    deadLineInput = document.getElementById('deadLineInput').value;
+
+    var target = document.getElementById('textSpaceDiv');
+    var task = document.createElement('div');
+    task.classList.add('task');
+    task.classList.add(taskLevel);
+    task.setAttribute('id',taskNum);
+
+    var xBtnHold = document.createElement('div');
+    xBtnHold.classList.add('hideBtn');
+    var xBtn = document.createElement('button');
+    xBtn.setAttribute('onclick', "this.parentNode.parentNode.remove()");
+    xBtn.appendChild(document.createTextNode('(x)'));
+    xBtnHold.appendChild(xBtn);
+    task.appendChild(xBtnHold);
+
+    var title = document.createElement('p');
+    if (titleInput == '') {titleInput = 'Title'};
+    title.appendChild(document.createTextNode(titleInput));
+    title.className = 'title';
+    task.appendChild(title);
+
+
+    var taskContent = document.createElement('p');
+    taskContent.className = 'taskCont';
+    taskContentInput = taskContentInput.replace(/\r?\n/g, '\n\n');
+    taskContent.appendChild(document.createTextNode(taskContentInput));
+    task.appendChild(taskContent);
+
+    task.appendChild(document.createElement('br'));
+
+    var deadLine = document.createElement('p');
+    deadLine.className = 'deadL';
+    deadLine.appendChild(document.createTextNode('Deadline:'));
+    deadLine.appendChild(document.createTextNode(deadLineInput));
+    task.appendChild(deadLine);
+
+    task.appendChild(document.createElement('br'));
+
+    fs.appendFile('src/saved.html', document.getElementById('textSpaceDiv').innerHTML, function (err) {
+        if (err) throw err;;
+        console.log('Saved!');
     });
 
-});			
+    target.appendChild(task);
+    parseInt(taskNum);
+    taskNum++;
+    taskNum.toString();
+
+
+}
+
+function showSettings() {
+    document.getElementById('settingsDiv').classList.remove('hidden');
+}
+
+function clearTasks() {
+    document.getElementById('textSpaceDiv').innerHTML = '';
+    fs.appendFile('src/saved.html', document.getElementById('textSpaceDiv').innerHTML, function (err) {
+        if (err) throw err;
+        console.log('Saved!');
+    });
+}   
+
+
+
+
